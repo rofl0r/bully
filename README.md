@@ -1,7 +1,6 @@
+This is my personal copy of the original bully project. 
 
-**A readonly subversion clone of this project exists at http://code.google.com/p/bully/source/checkout **
-
-**Prebuilt binary(s) can be downloaded from google code at http://code.google.com/p/bully/downloads/list **
+The original project has been taken down or removed from public access. this source will be available unless I recieve a take down request.
 
 # OVERVIEW
 
