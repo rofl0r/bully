@@ -17,7 +17,7 @@ tested against access points from numerous vendors, and with differing configura
 # DEPENDENCIES
 
 Bully requires libpcap and libssl. It uses WPS functionality written by Jouni Malinen; that source code
-is included in this repro for simplicity, as are libcrypto and several other sources that provide needed
+is included in this repo for simplicity, as are libcrypto and several other sources that provide needed
 functionality.
 
 Because Bully stores randomized pins and session data in normal files, there is no need for any database
