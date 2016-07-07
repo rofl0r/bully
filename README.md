@@ -1,6 +1,3 @@
-This is my personal copy of the original bully project. This project is not under active development.
-
-
 # OVERVIEW
 
 Bully is a new implementation of the WPS brute force attack, written in C. It is conceptually identical
@@ -11,6 +8,3 @@ was specifically developed to run on embedded Linux systems (OpenWrt, etc) regar
 
 Bully provides several improvements in the detection and handling of anomalous scenarios. It has been
 tested against access points from numerous vendors, and with differing configurations, with much success.
-
-# Notice
-The original project has been taken down or removed from public access. this source will be available unless I recieve a take down request.
