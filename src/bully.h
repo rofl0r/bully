@@ -191,6 +191,7 @@ struct global {
 	wpsd_t	*wdata;
 	int16	*pin1;
 	int16	*pin2;
+	char    pixie;
 };
 
 
@@ -233,6 +234,7 @@ char usage[] =
 "\n"
 "  Advanced arguments:\n"
 "\n"
+"      -d, --pixiewps         : Attempt to use pixiewps               [No]\n"
 "      -a, --acktime N        : Deprecated/ignored                  [Auto]\n"
 "      -r, --retries N        : Resend packets N times when not acked  [2]\n"
 "      -m, --m13time N        : Deprecated/ignored                  [Auto]\n"

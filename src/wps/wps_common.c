@@ -23,6 +23,10 @@
 #include "wps_i.h"
 #include "wps_dev_attr.h"
 
+/****** ADD THIS PART ******/
+#include "pixie.h"
+ /******/
+
 
 void wps_kdf(const u8 *key, const u8 *label_prefix, size_t label_prefix_len,
 	     const char *label, u8 *res, size_t res_len)
@@ -119,6 +123,24 @@ int wps_derive_keys(struct wps_data *wps)
 	os_memcpy(wps->keywrapkey, keys + WPS_AUTHKEY_LEN, WPS_KEYWRAPKEY_LEN);
 	os_memcpy(wps->emsk, keys + WPS_AUTHKEY_LEN + WPS_KEYWRAPKEY_LEN,
 		  WPS_EMSK_LEN);
+        /****** ADD THIS PART ******/
+	if (*pixierun > 0)
+	{
+		memset(pixie_authkey,0,sizeof(pixie_authkey));
+		printf("[P] AuthKey: ");
+		int pixiecnt = 0;
+		for (; pixiecnt < WPS_AUTHKEY_LEN; pixiecnt++) {
+			printf("%02x", *(wps->authkey + pixiecnt));
+			sprintf(cmd_pixie_aux, "%02x",  wps->authkey[pixiecnt]);
+			strcat(pixie_authkey, cmd_pixie_aux);
+			if (pixiecnt != WPS_AUTHKEY_LEN - 1) {
+			printf(":");
+			strcat(pixie_authkey,":");
+			}
+		}
+		printf("\n");
+	}	
+	/******/
 
 	wpa_hexdump_key(MSG_DEBUG, "WPS: AuthKey",
 			wps->authkey, WPS_AUTHKEY_LEN);

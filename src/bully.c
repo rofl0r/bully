@@ -43,6 +43,7 @@
 #include <limits.h>
 #include <pwd.h>
 
+
 #define	CONFIG_NO_STDOUT_DEBUG	1
 #define	CONFIG_INTERNAL_LIBTOMMATH
 #include "tls/bignum.c"
@@ -74,6 +75,8 @@
 #include "frame.h"
 #include "iface.h"
 #include "bully.h"
+
+#include <wps/pixie.h>
 
 sig_atomic_t ctrlc = 0;
 sig_atomic_t signm = 0;
@@ -154,6 +157,7 @@ int main(int argc, char *argv[])
 		G->k2delay = 5;
 		G->k2step = 1;
 		G->pinstart = G->pindex = -1;
+		//Pixie
 
 		char *temp = getpwuid(getuid())->pw_dir;
 		G->warpath = malloc(strlen(temp) + strlen(EXE_NAME) + 3);
@@ -167,7 +171,6 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Memory allocation error\n");
 		return 2;
 	};
-
 
 	while( 1 )
 	{
@@ -208,10 +211,11 @@ int main(int argc, char *argv[])
 			{"windows7",	0,	0,	'W'},
 			{"suppress",	0,	0,	'Z'},
 			{"help",	0,	0,	'h'},
+			{"pixiewps",	0,	0,	'd'},
 			{0,		0,	0,	 0 }
 		};
 
-		int option = getopt_long( argc, argv, "a:b:c:e:i:l:m:o:p:r:s:t:v:w:1:2:5ABCDEFLMNPRSTVWZh",
+		int option = getopt_long( argc, argv, "a:b:c:e:i:l:m:o:p:r:s:t:v:w:1:2:d5ABCDEFLMNPRSTVWZh",
 					long_options, &option_index );
 
 		if( option < 0 ) break;
@@ -325,6 +329,12 @@ int main(int argc, char *argv[])
 						goto usage_err;
 					};
 				break;
+			//Pixie
+			case 'd' :
+				memset(pixierun, 0, sizeof(pixierun));
+				strcpy(pixierun,"1");
+				break;
+
 			case '5' :
 				G->hop = AN_CHANS;
 				break;
@@ -422,6 +432,12 @@ int main(int argc, char *argv[])
 
 	G->ifname = argv[optind];
 
+	/****** ADD THIS PART ******/
+	memset(p_iface,0,sizeof(p_iface));
+	strcat(p_iface, G->ifname);
+
+	/******/
+
 	if (G->essid == 0 && G->ssids == 0) {
 		G->error = "Please specify either --bssid or --essid for the access point\n";
 		goto usage_err;
@@ -441,6 +457,7 @@ int main(int argc, char *argv[])
 	fmt_mac(hwmacs, G->hwmac);
 
 	vprint("[!] Bully %s - WPS vulnerability assessment utility\n", VERSION);
+	printf("[P] Modified for pixiewps by AAnarchYY(aanarchyy@gmail.com)\n");
 
 	if ((error = init_chans(G)) != NULL) {
 		snprintf(G->error, 256, "Bad channel number or list -- %s\n", error);
@@ -550,6 +567,11 @@ int main(int argc, char *argv[])
 	};
 
 	memcpy(G->bssid, ((mac_t*)G->inp[F_MAC].data)->adr3.addr, 6);
+	/****** ADD THIS PART ******/
+	memset(p_bssid,0,sizeof(p_bssid));
+	strcat(p_bssid, G->ssids);
+	/******/
+
 	G->ssids = fmt_mac(bssids, G->bssid);
 	vprint("[+] Got beacon for '%s' (%s)\n", G->essid, G->ssids);
 	G->nocheck = nocheck;

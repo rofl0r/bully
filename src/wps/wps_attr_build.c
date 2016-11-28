@@ -21,6 +21,9 @@
 #include "crypto/sha256.h"
 #include "wps_i.h"
 
+/****** ADD THIS PART ******/
+#include "pixie.h"
+ /******/
 
 int wps_build_public_key(struct wps_data *wps, struct wpabuf *msg)
 {
@@ -55,6 +58,29 @@ int wps_build_public_key(struct wps_data *wps, struct wpabuf *msg)
 	if (wps->registrar) {
 		wpabuf_free(wps->dh_pubkey_r);
 		wps->dh_pubkey_r = pubkey;
+
+		/****** ADD THIS PART ******/
+		if (*pixierun > 0)
+		{
+			unsigned char *v;
+		        v = wpabuf_mhead_u8(pubkey);
+	
+			memset(pixie_pkr,0,sizeof(pixie_pkr));
+			printf("[P] PKR: ");
+			int pixiecnt = 0;
+	       		for (; pixiecnt < 192; pixiecnt++) {
+				printf("%02x", v[pixiecnt]);
+				sprintf(cmd_pixie_aux, "%02x",  v[pixiecnt]);
+				strcat(pixie_pkr, cmd_pixie_aux);
+				if (pixiecnt != 191) {
+					printf(":");
+					strcat(pixie_pkr,":");
+				}
+			}
+			printf("\n");
+		}	
+		/******/
+
 	} else {
 		wpabuf_free(wps->dh_pubkey_e);
 		wps->dh_pubkey_e = pubkey;
